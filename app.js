@@ -68,7 +68,10 @@ function startMonitoring() {
         let alert = alerts[i];
         if(alert.mission.reward.items.indexOf("Orokin Catalyst") === -1 &&
            alert.mission.reward.items.indexOf("Orokin Reactor") === -1 &&
-           alert.mission.reward.items.indexOf("Forma") === -1) continue;
+           alert.mission.reward.items.indexOf("Forma") === -1 &&
+           alert.mission.reward.items.indexOf("Orokin Catalyst Blueprint") === -1 &&
+           alert.mission.reward.items.indexOf("Orokin Reactor Blueprint") === -1 &&
+           alert.mission.reward.items.indexOf("Forma Blueprint") === -1) continue;
         let alert_embed = alertEmbed(alert);
         
         let users_it = subscribed_users.slice(); //de-alias
