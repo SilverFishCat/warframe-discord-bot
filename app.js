@@ -35,7 +35,12 @@ function callWarframeAPI(noun) {
 
 function alertEmbed(alert) {
   var items = alert.mission.reward.items;
-  items = items.concat(alert.mission.reward.countedItems.map(x => `${formatNumber(x.count)} ${x.type}`));
+  items = items.concat(alert.mission.reward.countedItems.map(x => {
+    if(x.count > 1)
+      return `${formatNumber(x.count)} ${x.type}`;
+    else
+      return `${x.type}`;
+  }));
   items.push(formatNumber(alert.mission.reward.credits) + "cr");
   
   return {embed: {
