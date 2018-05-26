@@ -258,6 +258,20 @@ client.on("message", async message => {
   }
 });
 
-client.login(config.token).catch((reason) => {
-  console.error(`Unable to login to discord: ${reason}`);
+let lastDate = false;
+function restartClient() {
+  let now = new Date();
+  if(!lastDate || lastDate-Date > 60*5){
+    console.info("Connecting to discord");
+    client.login(config.token).catch((reason) => {
+      console.error(`Unable to login to discord: ${reason}`);
+    });
+    lastDate = now;
+  }
+}
+
+client.on("error", error => {
+  restartClient();
 });
+
+restartClient();
