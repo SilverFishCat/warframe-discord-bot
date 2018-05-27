@@ -113,7 +113,8 @@ client.on("message", async message => {
   const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
 
-  if(command === "help") {
+  switch(command) {
+  case "help":
     message.author.send({embed: {
       color: 3447003,
       title: "Help command",
@@ -140,27 +141,27 @@ client.on("message", async message => {
         icon_url: client.user.avatarURL,
       }
     }});
-  }
+    break;
 
-  if(command === "stat") {
+  case "stat":
     message.channel.send({embed: {
       color: 16716947,
       description: `I am serving ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`
     }}); 
-  }
+    break;
 
-  if(command === "code") {
+  case "code":
     message.channel.send({embed: {
       color: 16729344,
       description: `Check out the code over at [Github](https://github.com/zippy4/warframe-discord-bot)`
     }}); 
-  }
+    break;
 
-  if(command === "farm") {
-      message.channel.send(`https://youtu.be/60Lci-OcpFw`);
-  }
+  case "farm":
+    message.channel.send(`https://youtu.be/60Lci-OcpFw`);
+    break;
     
-  if(command === "void") {
+  case "void":
     callWarframeAPI("voidTrader").then(r => {
       var voidTrader = r.body;
       message.channel.send({embed: {
@@ -173,10 +174,10 @@ client.on("message", async message => {
         ],
       }});
     });
-  }
+    break;
 
-  if(command === "time") {
-      callWarframeAPI("cetusCycle").then(r => {
+  case "time":
+    callWarframeAPI("cetusCycle").then(r => {
       var isDay = r.body.isDay;
       var timeTillChange = r.body.shortString
       
@@ -203,9 +204,9 @@ client.on("message", async message => {
         ]
       }});
     });
-  }
+    break;
 
-  if(command === "alert") {
+  case "alert":
     callWarframeAPI("alerts").then(r => {
       let alerts = r.body;
       
@@ -215,9 +216,9 @@ client.on("message", async message => {
         message.channel.send(alertEmbed(alert));
       }
     });
-  }
+    break;
   
-  if(command === "report") {
+  case "report":
     var index = subscribed_users.indexOf(message.channel);
     if(index === -1) {
       subscribed_users.push(message.channel);
@@ -230,8 +231,8 @@ client.on("message", async message => {
     else {
       message.channel.send("You are already added.");
     }
-  }
-  if(command === "unreport") {
+    break;
+  case "unreport":
     var index = subscribed_users.indexOf(message.channel);
     if (index > -1) {
       subscribed_users.splice(index, 1);
@@ -244,9 +245,9 @@ client.on("message", async message => {
     else {
       message.channel.send("You are not on the reporting list.");
     }
-  }
+    break;
 
-  if(command === "purge") {
+  case "purge":
     const deleteCount = parseInt(args[0], 10);
     
     if(!deleteCount || deleteCount < 2 || deleteCount > 100)
@@ -255,6 +256,7 @@ client.on("message", async message => {
     const fetched = await message.channel.fetchMessages({count: deleteCount});
     message.channel.bulkDelete(fetched)
       .catch(error => message.reply(`Couldn't delete messages because of: ${error}`));
+    break;
   }
 });
 
